@@ -47,9 +47,9 @@ public class SpiderMovement extends Node {
 
 			for (int i = 0; i < adjacentNodes.length; i++) {
 				Node n = adjacentNodes[i];
-				// check that the node is empty space
+				// check if the node is empty space
 				if (n.getId() == -1) {
-				// add node to list of available nodes
+				//add node to list
 				 	moveTo.add(n);
 				}
 			}
