@@ -38,10 +38,11 @@ public class SpiderMovement extends Node {
 	//movement for the spider run in a thread
 	private void movement() {
 		synchronized (lock) {
-			System.out.println("Moving number: " + moveNumber);
+			//System.out.println("Moving number: " + moveNumber);
 
 			Node[] adjacentNodes = null;
 			List<Node> moveTo = new ArrayList<>();
+			
 			//get spider adjacent nodes
 			adjacentNodes = adjacentNodes(maze);
 
@@ -79,5 +80,9 @@ public class SpiderMovement extends Node {
 
 		}
 
+	}
+	
+	private void Traverse(){
+		
 	}
 }

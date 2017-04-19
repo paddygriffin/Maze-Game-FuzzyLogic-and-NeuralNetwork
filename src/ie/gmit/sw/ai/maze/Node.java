@@ -5,10 +5,6 @@ import java.awt.Color;
 public class Node {
 	private int id = -1;
 
-	public enum Direction {
-		North, South, East, West
-	};
-
 	private Node parent;
 	private Color color = Color.BLACK;
 	private Direction[] paths = null;
@@ -100,7 +96,7 @@ public class Node {
 		}
 		if (row < maze.length - 1) {
 			if (maze[row + 1][col].getId() != 0) {
-				adjacents.add(maze[row + 1][col]); // Add south
+				adjacents.add(maze[row + 1][col]); // Add South
 			}
 		}
 		
