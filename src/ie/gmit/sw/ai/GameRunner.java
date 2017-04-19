@@ -17,10 +17,14 @@ public class GameRunner implements KeyListener{
 		model = new Maze(MAZE_DIMENSION);
     	view = new GameView(model);//create a game view and tell it to display out gameview model
     	
+    	currentRow = model.getPlayer().getRow();
+    	currentCol = model.getPlayer().getCol();
+    	
     	Sprite[] sprites = getSprites();
     	view.setSprites(sprites);
     	
-    	placePlayer();
+    	//updateView();
+    	
     	//set up your view
     	Dimension d = new Dimension(GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
     	view.setPreferredSize(d);
@@ -37,14 +41,7 @@ public class GameRunner implements KeyListener{
         f.pack();
         f.setVisible(true);
 	}
-	
-	private void placePlayer(){   	
-    	currentRow = (int) (MAZE_DIMENSION * Math.random());
-    	currentCol = (int) (MAZE_DIMENSION * Math.random());
-    	model.set(currentRow, currentCol, new Node(currentRow, currentCol, 5)); //A Spartan warrior is at index 5
-    	updateView(); 		
-	}
-	
+
 	private void updateView(){
 		view.setCurrentRow(currentRow);
 		view.setCurrentCol(currentCol);
@@ -74,8 +71,8 @@ public class GameRunner implements KeyListener{
     
 	private boolean isValidMove(int row, int col){
 		if (row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getId() == -1){
-			model.set(currentRow, currentCol, new Node(currentRow, currentCol, -1));
-			model.set(row, col, new Node(row, col, 5));
+			model.set(currentRow, currentCol, model.get(row, col));
+			model.set(row, col, model.getPlayer());
 			return true;
 		}else{
 			return false; //Can't move
