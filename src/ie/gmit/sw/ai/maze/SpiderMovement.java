@@ -9,7 +9,7 @@ public class SpiderMovement extends Node{
 	private Node[][] maze = null;
 	private ExecutorService executor = Executors.newFixedThreadPool(1);
 
-	public SpiderMovement(int row, int col, int id) {
+	public SpiderMovement(int row, int col, int id, Object lock, Node[][] maze) {
 		super(row, col, id);
 		
 		this.lock = lock;

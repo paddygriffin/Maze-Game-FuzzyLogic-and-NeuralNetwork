@@ -4,7 +4,7 @@ import ie.gmit.sw.ai.maze.*;
 
 public class Maze {
 	private Node[][] maze;
-
+	private Object lock = new Object();
 	public Maze(int dimension){
 		
 		maze = new Node[dimension][dimension];
@@ -44,6 +44,10 @@ public class Maze {
 			int col = (int) (maze[0].length * Math.random());
 			
 			if (maze[row][col].getId() == replace){
+				//if the feature is greater than 5, a spider will be created
+				if(feature > 5){
+					maze[row][col] = new SpiderMovement( row, col, feature, lock, maze);
+				}
 				maze[row][col].setId(feature);
 				counter++;
 			}
