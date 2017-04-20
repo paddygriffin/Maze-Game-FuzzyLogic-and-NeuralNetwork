@@ -1,0 +1,49 @@
+FUNCTION_BLOCK Health
+
+VAR_INPUT
+    playerHealth    :  REAL; 
+    enemyHealth  :  REAL;  
+END_VAR
+
+VAR_OUTPUT
+    Aggressiveness : REAL; 
+END_VAR
+
+FUZZIFY playerHealth
+    TERM death := (0, 0) (0, 1) (50, 0) ;
+    TERM Good := (14, 0) (50, 1) (83, 0) ;
+    TERM Excellent := (50, 0) (100, 1) (100, 0) ;
+END_FUZZIFY
+
+FUZZIFY enemyHealth
+    TERM death := (0, 0) (0, 1) (50, 0) ;
+    TERM Good := (14, 0) (50, 1) (83, 0) ;
+    TERM Excellent := (50, 0) (100, 1) (100, 0) ;
+END_FUZZIFY
+
+DEFUZZIFY Aggressiveness
+    TERM run := (0,0) (5,1) (10,0);
+    TERM fight := (15,0)(20,1)(25,0);
+    TERM attack := (30,0)(35,1)(40,0);
+    METHOD: COG;
+    DEFAULT := 0;
+END_DEFUZZIFY
+
+
+
+RULEBLOCK No1
+
+    AND : MIN;
+    ACT : MIN;
+    ACCU : MAX;
+RULE 0: IF playerHealth IS death AND enemyHealth IS death THEN Aggressiveness IS fight;
+RULE 1: IF playerHealth IS death AND enemyHealth IS Good THEN Aggressiveness IS run;
+RULE 2: IF playerHealth IS death AND enemyHealth IS Excellent THEN Aggressiveness IS run;
+RULE 3: IF playerHealth IS Good AND enemyHealth IS death THEN Aggressiveness IS attack;
+RULE 4: IF playerHealth IS Good AND enemyHealth IS Good THEN Aggressiveness IS fight;
+RULE 5: IF playerHealth IS Good AND enemyHealth IS Excellent THEN Aggressiveness IS fight;
+RULE 6: IF playerHealth IS Excellent AND enemyHealth IS death THEN Aggressiveness IS attack;
+RULE 7: IF playerHealth IS Excellent AND enemyHealth IS Good THEN Aggressiveness IS attack;
+RULE 8: IF playerHealth IS Excellent AND enemyHealth IS Excellent THEN Aggressiveness IS fight;
+END_RULEBLOCK
+END_FUNCTION_BLOCK
