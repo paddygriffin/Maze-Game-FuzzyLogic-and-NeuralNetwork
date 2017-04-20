@@ -23,7 +23,7 @@ END_FUZZIFY
 
 DEFUZZIFY Aggressiveness
     TERM run := (0,0) (5,1) (10,0);
-    TERM fight := (20,0)(25,1)(30,0);
+    TERM fight := (15,0)(20,1)(25,0);
     TERM attack := (30,0)(35,1)(40,0);
     METHOD: COG;
     DEFAULT := 0;
