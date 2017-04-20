@@ -5,11 +5,14 @@ import ie.gmit.sw.ai.maze.*;
 public class Maze {
 	private Node[][] maze;
 	private Object lock = new Object();
+	private PlayerMovement pm;
+	
 	public Maze(int dimension){
 		
 		maze = new Node[dimension][dimension];
 		init();
 		buildMaze();
+		addFeature(5, -1, 1);
 		
 		int featureNumber = 20;
 		addFeature(1, 0, featureNumber); //1 is a sword, 0 is a hedge
@@ -27,7 +30,7 @@ public class Maze {
 		addFeature(12, -1, featureNumber); //< is a Red Spider, 0 is a hedge
 		addFeature(13, -1, featureNumber); //= is a Yellow Spider, 0 is a hedge
 	}
-	
+
 	private void init(){
 		for (int row = 0; row < maze.length; row++){
 			for (int col = 0; col < maze[row].length; col++){
@@ -46,14 +49,26 @@ public class Maze {
 			if (maze[row][col].getId() == replace){
 				//if the feature is greater than 5, a spider will be created
 				if(feature > 5){
-					maze[row][col] = new SpiderMovement( row, col, feature, lock, maze);
+					maze[row][col] = new SpiderMovement( row, col, feature, lock, maze, getPlayer());
 				}
-				maze[row][col].setId(feature);
+				else if(feature == 5){
+					//creates player node
+					pm = new PlayerMovement(row, col, 5);
+					maze[row][col] = pm;
+				}
+				else{
+					maze[row][col].setId(feature);
+				}
 				counter++;
 			}
 		}
 	}
 	
+	//
+	public PlayerMovement getPlayer() {
+		return this.pm;
+	}
+
 	private void buildMaze(){ 
 		for (int row = 1; row < maze.length - 1; row++){
 			for (int col = 1; col < maze[row].length - 1; col++){
@@ -80,6 +95,8 @@ public class Maze {
 	}
 	
 	public void set(int row, int col, Node n){
+		n.setRow(row);
+		n.setCol(col);
 		this.maze[row][col] = n;
 	}
 	
