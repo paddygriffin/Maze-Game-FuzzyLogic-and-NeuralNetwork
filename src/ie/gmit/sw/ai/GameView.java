@@ -21,6 +21,8 @@ public class GameView extends JPanel implements ActionListener{
 	
 	public GameView(Maze maze) throws Exception{
 		this.maze = maze;//pass in the maze
+		currentRow = maze.getPlayer().getRow();
+    	currentCol = maze.getPlayer().getCol();
 		setBackground(Color.LIGHT_GRAY);
 		setDoubleBuffered(true);//image optimization
 		timer = new Timer(300, this);
