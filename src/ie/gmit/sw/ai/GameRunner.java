@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import ie.gmit.sw.ai.maze.*;
+import ie.gmit.sw.ai.maze.*;
 
 public class GameRunner implements KeyListener{
 	private static final int MAZE_DIMENSION = 50;//100x100
@@ -91,7 +92,11 @@ public class GameRunner implements KeyListener{
 		}
 		else if(row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getTypeOfNode() == '\u0034'){
 			model.getMaze()[row][col].setTypeOfNode('0');
+			player.addHbomb();
 			return false; //Can't move
+		}
+		else{
+			return false;
 		}
 	}
 	
