@@ -1,15 +1,21 @@
-package ie.gmit.sw.ai;
+package ie.gmit.sw.ai.sprite;
 
 import javax.imageio.*;
 import java.awt.image.*;
 //sprite is just an animated image
-public class Sprite {
+public abstract class Sprite {
 	private String name; //The name of this sprite
 	private BufferedImage[] frames; //The set of image frames to animate(represent the image as a bufferedImage)
  	private int index = 0; //Initial starting index in array
+ 	private int row;
+ 	private int col;
  	
  	//private double lifeForce = 500;
- 	
+
+ 	public Sprite(){
+ 		
+ 	}
+
 	public Sprite(String name, String... images) throws Exception{//pass in the name and images
 		//fill the values of each one
 		this.name = name;
@@ -54,5 +60,20 @@ public class Sprite {
 		return this.name;
 	}
 	
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
+	}
 	
 }

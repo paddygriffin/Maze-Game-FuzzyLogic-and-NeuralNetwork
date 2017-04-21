@@ -1,6 +1,7 @@
 package ie.gmit.sw.ai.traversers;
 
 import ie.gmit.sw.ai.maze.*;
+
 import java.util.*;
 public class AStarTraversator implements Traversator{
 	private LinkedList<Node> path = null;
