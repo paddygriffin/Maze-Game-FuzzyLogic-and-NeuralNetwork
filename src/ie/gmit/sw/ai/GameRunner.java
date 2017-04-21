@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
+import ie.gmit.sw.ai.sprite.NeuralSprite;
 import ie.gmit.sw.ai.sprite.Object;
 import ie.gmit.sw.ai.sprite.Player;
 import ie.gmit.sw.ai.sprite.Spiders;
@@ -19,10 +19,15 @@ public class GameRunner implements KeyListener{
 	private int currentRow;
 	private int currentCol;
 	private Player player;
+	private Spiders spider;
+	private NeuralSprite nsprite;
+	
+	JLabel healthStatus;
 	
 	public GameRunner() throws Exception{
 		currentRow = (int) (MAZE_DIMENSION * Math.random());
     	currentCol = (int) (MAZE_DIMENSION * Math.random());
+    	//player = new Player(currentRow, currentCol);
 		model = new Maze(MAZE_DIMENSION, player);//added player because of maze
     	view = new GameView(model);//create a game view and tell it to display out gameview model
     	placePlayer();
@@ -62,17 +67,26 @@ public class GameRunner implements KeyListener{
 	
 	//which keys are pressed
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT && currentCol < MAZE_DIMENSION - 1) {
+    	if (e.getKeyCode() == KeyEvent.VK_RIGHT && currentCol < MAZE_DIMENSION - 1) 
+    	{
         	if (isValidMove(currentRow, currentCol + 1)) currentCol++;   		
-        }else if (e.getKeyCode() == KeyEvent.VK_LEFT && currentCol > 0) {
+        }
+    	else if (e.getKeyCode() == KeyEvent.VK_LEFT && currentCol > 0) 
+    	{
         	if (isValidMove(currentRow, currentCol - 1)) currentCol--;	
-        }else if (e.getKeyCode() == KeyEvent.VK_UP && currentRow > 0) {
+        }
+    	else if (e.getKeyCode() == KeyEvent.VK_UP && currentRow > 0) 
+    	{
         	if (isValidMove(currentRow - 1, currentCol)) currentRow--;
-        }else if (e.getKeyCode() == KeyEvent.VK_DOWN && currentRow < MAZE_DIMENSION - 1) {
+        }
+    	else if (e.getKeyCode() == KeyEvent.VK_DOWN && currentRow < MAZE_DIMENSION - 1) 
+    	{
         	if (isValidMove(currentRow + 1, currentCol)) currentRow++;        	  	
-        }else if (e.getKeyCode() == KeyEvent.VK_Z){
+        }
+    	else if (e.getKeyCode() == KeyEvent.VK_Z){
         	view.toggleZoom();
-        }else{
+        }
+    	else{
         	return;
         }
         
@@ -91,6 +105,8 @@ public class GameRunner implements KeyListener{
 		}
 		else if(row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getTypeOfNode() == '\u0031'){
 			model.getMaze()[row][col].setTypeOfNode('0');
+			player.getSword();
+			player.setSwordPower(20);
 			return false; //Can't move
 		}
 		else if(row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getTypeOfNode() == '\u0032'){
@@ -99,15 +115,50 @@ public class GameRunner implements KeyListener{
 		}
 		else if(row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getTypeOfNode() == '\u0033'){
 			model.getMaze()[row][col].setTypeOfNode('0');
+			player.addBomb();
 			return false; //Can't move
 		}
 		else if(row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getTypeOfNode() == '\u0034'){
 			model.getMaze()[row][col].setTypeOfNode('0');
-			player.addHbomb();
+			player.addBigbomb();
 			return false; //Can't move
 		}
-		else{
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getTypeOfNode() == '\u0036')){
+			
+			spider = model.getSprite(row, col);
+			spider.fuzzyEngage();
+			if(player.getHealth() > 0){
+				spider.setId(-1);
+				System.out.println("sprite id game runner: " + spider.getId());
+				model.set(currentRow, currentCol, '\u0020');
+				model.set(row, col, '\u0020');
+				//Thread.currentThread().interrupt();
+				healthStatus.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
+			}
+			else{
+				// end game ?
+				System.exit(0);
+			}
 			return false;
+		}
+		else if((row <= model.size() - 1 && col <= model.size() - 1 && model.get(row, col).getTypeOfNode() == '\u0037'))
+		{
+			nsprite = model.getNeuralSprite(row, col);
+			//nsprite.engageNN();
+//			if(player.getHealth() > 0){
+//				nsprite.setId(-1);
+//				model.set(currentRow, currentCol, '\u0020');
+//				model.set(row, col, '\u0020');
+//				healthBar.setText("Health Status: " + Double.toString(Math.round(player.getHealth())));
+//			}
+//			else{
+//				// end game ?
+//				System.exit(0);
+//			}
+			return false;
+		}
+		else{
+			return false; //Can't move
 		}
 	}
 	

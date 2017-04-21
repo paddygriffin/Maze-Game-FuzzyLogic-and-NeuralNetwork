@@ -75,16 +75,16 @@ public class Node {
 
 	public Node[] children(Node[][] maze) {
 		java.util.List<Node> children = new java.util.ArrayList<Node>();
-
+		
 		if (row > 0 && maze[row - 1][col].hasDirection(Direction.South))
-			children.add(maze[row - 1][col]); // Add North
+			children.add(maze[row - 1][col]); //Add North
 		if (row < maze.length - 1 && maze[row + 1][col].hasDirection(Direction.North))
-			children.add(maze[row + 1][col]); // Add South
-		if (col > 0 && maze[row][col - 1].hasDirection(Direction.East))
-			children.add(maze[row][col - 1]); // Add West
+			children.add(maze[row + 1][col]); //Add South
+		if (col > 0 && maze[row][col - 1].hasDirection(Direction.East)) 
+			children.add(maze[row][col - 1]); //Add West
 		if (col < maze[row].length - 1 && maze[row][col + 1].hasDirection(Direction.West))
-			children.add(maze[row][col + 1]); // Add East
-
+			children.add(maze[row][col + 1]); //Add East
+		
 		return (Node[]) children.toArray(new Node[children.size()]);
 	}
 
@@ -121,12 +121,9 @@ public class Node {
 		} else {
 			index = paths.length;
 			Direction[] temp = new Direction[index + 1];
-			for (int i = 0; i < paths.length; i++) {
-				temp[i] = paths[i];
-			}
-			paths = temp;
+			for (int i = 0; i < paths.length; i++) temp[i] = paths[i];
+			paths = temp;		
 		}
-
 		paths[index] = direction;
 	}
 
@@ -135,7 +132,7 @@ public class Node {
 	}
 
 	public void setVisited(boolean visited) {
-		this.color = Color.BLUE;
+		//this.color = Color.BLUE;
 		this.visited = visited;
 	}
 

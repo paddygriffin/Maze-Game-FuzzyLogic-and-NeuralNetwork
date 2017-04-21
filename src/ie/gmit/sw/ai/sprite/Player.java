@@ -6,10 +6,19 @@ public class Player{
 	private int col;
 	private int sword = 0;
 	private int bomb = 0;
-	private int hbomb = 0;
+	private int bigBomb = 0;
 	private int swordPower = 0;
-	private int bombPower = 0;
-	private int hbombPower = 0;
+	private int bombPower = 20;
+	private int bigBombPower = 40;
+	private double health = 200;
+	
+	public double getHealth() {
+		return health;
+	}
+
+	public void setHealth(double health) {
+		this.health = health;
+	}
 	
 	public int getRow() {
 		return row;
@@ -27,28 +36,28 @@ public class Player{
 		this.col = col;
 	}
 	
-	public int getHbomb() {
-		return hbomb;
+	public int getBigbomb() {
+		return bigBomb;
 	}
 	
-	public void addHbomb() {
-		hbomb++;
+	public void addBigbomb() {
+		bigBomb++;
 	}
 	
 	public int getSword() {
 		return sword;
 	}
 	
-	public void setSword(int sword) {
-		this.sword = sword;
+	public void addSword() {
+		this.sword++;
 	}
 	
 	public int getBomb() {
 		return bomb;
 	}
 	
-	public void setBomb(int bomb) {
-		this.bomb = bomb;
+	public void addBomb() {
+		this.bomb++;
 	}
 	
 	public int getSwordPower() {
@@ -67,11 +76,11 @@ public class Player{
 		this.bombPower = bombPower;
 	}
 	
-	public int getHbombPower() {
-		return hbombPower;
+	public int getBigBombPower() {
+		return bigBombPower;
 	}
 	
 	public void setHbombPower(int hbombPower) {
-		this.hbombPower = hbombPower;
+		this.bigBombPower = hbombPower;
 	}
 }

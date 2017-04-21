@@ -1,61 +1,78 @@
 package ie.gmit.sw.ai.traversers;
 
-import ie.gmit.sw.ai.maze.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 
-import java.util.*;
+import ie.gmit.sw.ai.*;
+import ie.gmit.sw.ai.maze.Node;
+
+
 public class AStarTraversator implements Traversator{
-	private LinkedList<Node> path = null;
 	private Node goal;
+	public boolean foundGoal = false;
+	public Node[][] maze;
+	public Node startNode;
+
 	
-	public AStarTraversator(Node goal){
+	public AStarTraversator(Node goal) {
 		this.goal = goal;
+		System.out.println(goal);
 	}
-	
+
 	public void traverse(Node[][] maze, Node node) {
-        long time = System.currentTimeMillis();
-    	int visitCount = 0;
-    	
-		PriorityQueue<Node> open = new PriorityQueue<Node>(20, (Node current, Node next)-> (current.getPathCost() + current.getHeuristic(goal)) - (next.getPathCost() + next.getHeuristic(goal)));
+		reInit(maze);
+	
+		long time = System.currentTimeMillis();
+		int visitCount = 0;
+
+		PriorityQueue<Node> open = new PriorityQueue<Node>(20,
+				(Node current, Node next) -> (current.getPathCost() + current.getHeuristic(goal))
+						- (next.getPathCost() + next.getHeuristic(goal)));
 		java.util.List<Node> closed = new ArrayList<Node>();
-		path = new LinkedList<>();
-    	
+
 		open.offer(node);
-		node.setPathCost(0);		
-		while(!open.isEmpty()){
-			node = open.poll();		
+		node.setPathCost(0);
+		while (!open.isEmpty()) {
+			node = open.poll();
 			closed.add(node);
-			node.setVisited(true);	
+			node.setVisited(true);
 			visitCount++;
-			
-			if (node.isGoalNode()){
-		        time = System.currentTimeMillis() - time; //Stop the clock
-		        TraversatorStats.printStats(node, time, visitCount);
+
+			if (node.getTypeOfNode() == '\u003E') {
+				time = System.currentTimeMillis() - time; // Stop the clock
+				foundGoal = true;
+				System.out.println("got it");
+				TraversatorStats.printStats(node, time, visitCount);
 				break;
 			}
-			
-			try { //Simulate processing each expanded node
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			//Process adjacent nodes
-			Node[] children = node.adjacentNodes(maze);
+			// Process adjacent nodes
+			Node[] children = node.children(maze);
 			for (int i = 0; i < children.length; i++) {
 				Node child = children[i];
 				int score = node.getPathCost() + 1 + child.getHeuristic(goal);
 				int existing = child.getPathCost() + child.getHeuristic(goal);
-				
-				if ((open.contains(child) || closed.contains(child)) && existing < score){
+
+				if ((open.contains(child) || closed.contains(child)) && existing < score) {
 					continue;
-				}else{
+				} else {
 					open.remove(child);
 					closed.remove(child);
 					child.setParent(node);
 					child.setPathCost(node.getPathCost() + 1);
 					open.add(child);
 				}
-			}									
-		}path.addFirst(closed.get(0));
+			}
+		}
+
+	}
+	private void reInit(Node[][] maze) {
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[i].length; j++) {
+				maze[i][j].setVisited(false);
+				maze[i][j].setParent(null);
+			}
+		}
 	}
 }

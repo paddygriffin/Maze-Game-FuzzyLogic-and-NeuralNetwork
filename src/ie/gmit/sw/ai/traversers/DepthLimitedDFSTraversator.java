@@ -42,16 +42,17 @@ public class DepthLimitedDFSTraversator implements Traversator{
 			e.printStackTrace();
 		}
 		
-		Node[] children = node.children(maze);
+		Node[] children = node.adjacentNodes(maze);
 		for (int i = 0; i < children.length; i++) {
 			if (children[i] != null && !children[i].isVisited()){
 				children[i].setParent(node);
 				try{
 					if(spider.getId() != -1){
 						System.out.println(spider.getId());
-						spider.spriteManeuver(node.getRow(), node.getCol());
+						spider.moveSprite(node.getRow(), node.getCol());
 					}
 					else{
+						
 						break;
 					}
 				}catch (InterruptedException e){
