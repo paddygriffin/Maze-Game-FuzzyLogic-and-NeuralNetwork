@@ -1,14 +1,19 @@
 package ie.gmit.sw.ai;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 import ie.gmit.sw.ai.maze.*;
+import ie.gmit.sw.ai.sprite.Weapon;
+import ie.gmit.sw.ai.sprite.Player;
+import ie.gmit.sw.ai.sprite.Spiders;
 
 public class Maze {
 	private Node[][] maze;
 	private Player player;
 	private ExecutorService ex = Executors.newFixedThreadPool(100);
-	
+	private List<Weapon> sprites = new ArrayList<>();
 	public Maze(int dimension, Player player){
 		
 		maze = new Node[dimension][dimension];
@@ -38,6 +43,7 @@ public class Maze {
 		for (int row = 0; row < maze.length; row++){
 			for (int col = 0; col < maze[row].length; col++){
 				maze[row][col] = new Node(row, col); //Index 0 is a hedge...
+				maze[row][col].setTypeOfNode('0');
 				player = getPlayer();
 			}
 		}
@@ -54,7 +60,7 @@ public class Maze {
 				maze[row][col].setTypeOfNode(feature);
 				//if the feature is greater than 5, a spider will be created
 				if(number > 30){
-					ex.execute(new SpiderSprite(maze, player, row, col)); 
+					ex.execute(new Spiders(maze, player, row, col, 25, counter)); //25 is spiders strength
 				}
 				counter++;
 			}
@@ -115,5 +121,14 @@ public class Maze {
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+	
+	public Weapon getSprite(int row, int col){
+		for(Weapon s : sprites ){
+			if (maze[row][col].getRow() == row && maze[row][col].getCol() == col){
+				return s;
+			}
+		}
+		return null;
 	}
 }

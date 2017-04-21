@@ -2,6 +2,8 @@ package ie.gmit.sw.ai.maze;
 
 import java.awt.Color;
 
+import ie.gmit.sw.ai.Direction;
+
 public class Node {
 	//private int id = -1;
 

@@ -1,10 +1,10 @@
-package ie.gmit.sw.ai.maze;
+package ie.gmit.sw.ai.sprite;
 
 
-import ie.gmit.sw.ai.Sprite;
+import ie.gmit.sw.ai.maze.Node;
 import ie.gmit.sw.ai.traversers.*;
 
-public class SpiderSprite extends Sprite implements Runnable {
+public class Spiders extends Sprite implements Runnable {
 
 	private Node[][] maze;
 	private Player player;
@@ -13,24 +13,24 @@ public class SpiderSprite extends Sprite implements Runnable {
 	private int id;
 	private double strength;
 	
-	public SpiderSprite(String name, String[] images) throws Exception {
+	public Spiders(String name, String... images) throws Exception {
 		super(name, images);
 	}
 
-	public SpiderSprite(Node[][] maze, Player player, int row, int col, int id, int strength) {
+	public Spiders(Node[][] maze, Player player, int row, int col, int id, int strength) {
 		super();
 		this.maze = maze;
 		this.player = player;
 		this.row = row;
 		this.col = col;
-		this.id = id;
+		this.setId(id);
 		this.strength = strength;
 		
 	}
 
 	@Override
 	public void run() {
-		System.out.println("run");
+		System.out.println("running");
 		
 		//Traversator t = new AStarTraversator();
 		

@@ -3,7 +3,12 @@ package ie.gmit.sw.ai;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 import ie.gmit.sw.ai.maze.*;
+import ie.gmit.sw.ai.sprite.Weapon;
+import ie.gmit.sw.ai.sprite.Player;
+import ie.gmit.sw.ai.sprite.Spiders;
+import ie.gmit.sw.ai.sprite.Sprite;
 import ie.gmit.sw.ai.maze.*;
 
 public class GameRunner implements KeyListener{
@@ -19,8 +24,8 @@ public class GameRunner implements KeyListener{
 		model = new Maze(MAZE_DIMENSION, player);//added player because of maze
     	view = new GameView(model);//create a game view and tell it to display out gameview model
     	
-    	currentRow = model.getPlayer().getRow();
-    	currentCol = model.getPlayer().getCol();
+    	currentRow = (int) (MAZE_DIMENSION * Math.random());
+    	currentCol = (int) (MAZE_DIMENSION * Math.random());
     	
     	Sprite[] sprites = getSprites();
     	view.setSprites(sprites);
@@ -106,20 +111,20 @@ public class GameRunner implements KeyListener{
 		//sprite will be referenced by its index in the array, e.g. a 3 implies a Bomb...
 		//Ideally, the array should dynamically created from the images... 
 		Sprite[] sprites = new Sprite[IMAGE_COUNT];
-		sprites[0] = new WeaponSprite("Hedge", "resources/hedge.png");
-		sprites[1] = new WeaponSprite("Sword", "resources/sword.png");
-		sprites[2] = new WeaponSprite("Help", "resources/help.png");
-		sprites[3] = new WeaponSprite("Bomb", "resources/bomb.png");
-		sprites[4] = new WeaponSprite("Hydrogen Bomb", "resources/h_bomb.png");
-		sprites[5] = new WeaponSprite("Spartan Warrior", "resources/spartan_1.png", "resources/spartan_2.png");
-		sprites[6] = new SpiderSprite("Black Spider", "resources/black_spider_1.png", "resources/black_spider_2.png");
-		sprites[7] = new SpiderSprite("Blue Spider", "resources/blue_spider_1.png", "resources/blue_spider_2.png");
-		sprites[8] = new SpiderSprite("Brown Spider", "resources/brown_spider_1.png", "resources/brown_spider_2.png");
-		sprites[9] = new SpiderSprite("Green Spider", "resources/green_spider_1.png", "resources/green_spider_2.png");
-		sprites[10] = new Sprite("Grey Spider", "resources/grey_spider_1.png", "resources/grey_spider_2.png");
-		sprites[11] = new Sprite("Orange Spider", "resources/orange_spider_1.png", "resources/orange_spider_2.png");
-		sprites[12] = new Sprite("Red Spider", "resources/red_spider_1.png", "resources/red_spider_2.png");
-		sprites[13] = new Sprite("Yellow Spider", "resources/yellow_spider_1.png", "resources/yellow_spider_2.png");
+		sprites[0] = new Weapon("Hedge", "resources/hedge.png");
+		sprites[1] = new Weapon("Sword", "resources/sword.png");
+		sprites[2] = new Weapon("Help", "resources/help.png");
+		sprites[3] = new Weapon("Bomb", "resources/bomb.png");
+		sprites[4] = new Weapon("Hydrogen Bomb", "resources/h_bomb.png");
+		sprites[5] = new Weapon("Spartan Warrior", "resources/spartan_1.png", "resources/spartan_2.png");
+		sprites[6] = new Spiders("Black Spider", "resources/black_spider_1.png", "resources/black_spider_2.png");
+		sprites[7] = new Spiders("Blue Spider", "resources/blue_spider_1.png", "resources/blue_spider_2.png");
+		sprites[8] = new Spiders("Brown Spider", "resources/brown_spider_1.png", "resources/brown_spider_2.png");
+		sprites[9] = new Spiders("Green Spider", "resources/green_spider_1.png", "resources/green_spider_2.png");
+//		sprites[10] = new Sprite("Grey Spider", "resources/grey_spider_1.png", "resources/grey_spider_2.png");
+//		sprites[11] = new Sprite("Orange Spider", "resources/orange_spider_1.png", "resources/orange_spider_2.png");
+//		sprites[12] = new Sprite("Red Spider", "resources/red_spider_1.png", "resources/red_spider_2.png");
+//		sprites[13] = new Sprite("Yellow Spider", "resources/yellow_spider_1.png", "resources/yellow_spider_2.png");
 		return sprites;
 		//read in these sprites and pass them into an array of sprites
 	}

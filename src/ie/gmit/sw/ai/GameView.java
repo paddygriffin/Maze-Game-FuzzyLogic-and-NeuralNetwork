@@ -3,6 +3,8 @@ package ie.gmit.sw.ai;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import ie.gmit.sw.ai.sprite.Sprite;
 public class GameView extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	public static final int DEFAULT_VIEW_SIZE = 800;//600	
@@ -20,9 +22,9 @@ public class GameView extends JPanel implements ActionListener{
 	private Color[] reds = {new Color(255,160,122), new Color(139,0,0), new Color(255, 0, 0)}; //Animate enemy "dots" to make them easier to see
 	
 	public GameView(Maze maze) throws Exception{
-		this.maze = maze;//pass in the maze
-		currentRow = maze.getPlayer().getRow();
-    	currentCol = maze.getPlayer().getCol();
+//		this.maze = maze;//pass in the maze
+//		currentRow = maze.getPlayer().getRow();
+//    	currentCol = maze.getPlayer().getCol();
 		setBackground(Color.LIGHT_GRAY);
 		setDoubleBuffered(true);//image optimization
 		timer = new Timer(300, this);
