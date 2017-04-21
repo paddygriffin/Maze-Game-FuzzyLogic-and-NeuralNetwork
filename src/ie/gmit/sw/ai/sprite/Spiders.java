@@ -32,7 +32,8 @@ public class Spiders extends Sprite implements Runnable {
 	public void run() {
 		System.out.println("running");
 		
-		//Traversator t = new AStarTraversator();
+		Traversator dlDFST = new DepthLimitedDFSTraversator(10, player, this);
+		dlDFST.traverse(maze, maze[row][col]);
 		
 	}
 	
