@@ -1,63 +1,60 @@
 package ie.gmit.sw.ai;
 
+import java.util.concurrent.*;
+
 import ie.gmit.sw.ai.maze.*;
 
 public class Maze {
 	private Node[][] maze;
-	private Object lock = new Object();
-	private PlayerMovement pm;
+	private Player player;
+	private ExecutorService ex = Executors.newFixedThreadPool(100);
 	
-	public Maze(int dimension){
+	public Maze(int dimension, Player player){
 		
 		maze = new Node[dimension][dimension];
+		this.player=player;//
 		init();
 		buildMaze();
-		addFeature(5, -1, 1);
+		//addFeature(5, -1, 1);
 		
 		int featureNumber = 20;
-		addFeature(1, 0, featureNumber); //1 is a sword, 0 is a hedge
-		addFeature(2, 0, featureNumber); //2 is help, 0 is a hedge
-		addFeature(3, 0, featureNumber); //3 is a bomb, 0 is a hedge
-		addFeature(4, 0, featureNumber); //4 is a hydrogen bomb, 0 is a hedge
-		
-		featureNumber = 30;
-		addFeature(6, -1, featureNumber); //6 is a Black Spider, 0 is a hedge
-		addFeature(7, -1, featureNumber); //7 is a Blue Spider, 0 is a hedge
-		addFeature(8, -1, featureNumber); //8 is a Brown Spider, 0 is a hedge
-//		addFeature(9, -1, featureNumber); //9 is a Green Spider, 0 is a hedge
-//		addFeature(10, -1, featureNumber); //: is a Grey Spider, 0 is a hedge
-//		addFeature(11, -1, featureNumber); //; is a Orange Spider, 0 is a hedge
-//		addFeature(12, -1, featureNumber); //< is a Red Spider, 0 is a hedge
-//		addFeature(13, -1, featureNumber); //= is a Yellow Spider, 0 is a hedge
+		addFeature('\u0031', '0', featureNumber); //1 is a sword, 0 is a hedge
+		addFeature('\u0032', '0', featureNumber); //2 is help, 0 is a hedge
+		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
+		addFeature('\u0034', '0', featureNumber); //4 is a hydrogen bomb, 0 is a hedge
+	
+		featureNumber = 30;//(int)((dimension * dimension) * 0.01);
+		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
+//		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
+//		addFeature('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
+//		addFeature('\u0039', '0', featureNumber); //9 is a Green Spider, 0 is a hedge
+//		addFeature('\u003A', '0', featureNumber); //: is a Grey Spider, 0 is a hedge
+//		addFeature('\u003B', '0', featureNumber); //; is a Orange Spider, 0 is a hedge
+//		addFeature('\u003C', '0', featureNumber); //< is a Red Spider, 0 is a hedge
+//		addFeature('\u003D', '0', featureNumber); //= is a Yellow Spider, 0 is a hedge
 	}
 
 	private void init(){
 		for (int row = 0; row < maze.length; row++){
 			for (int col = 0; col < maze[row].length; col++){
-				maze[row][col] = new Node(row, col, 0); //Index 0 is a hedge...
+				maze[row][col] = new Node(row, col); //Index 0 is a hedge...
+				player = getPlayer();
 			}
 		}
 	}
 	
 	//fires in a particular feature(replaces the 0's with for example 6 for a bomb)
-	private void addFeature(int feature, int replace, int number){
+	private void addFeature(char feature, int replace, int number){
 		int counter = 0;
 		while (counter < number){
 			int row = (int) (maze.length * Math.random());
 			int col = (int) (maze[0].length * Math.random());
 			
-			if (maze[row][col].getId() == replace){
+			if (maze[row][col].getTypeOfNode() == replace){
+				maze[row][col].setTypeOfNode(feature);
 				//if the feature is greater than 5, a spider will be created
-				if(feature > 5){
-					maze[row][col] = new SpiderMovement( row, col, feature, lock, maze, getPlayer());
-				}
-				else if(feature == 5){
-					//creates player node
-					pm = new PlayerMovement(row, col, 5);
-					maze[row][col] = pm;
-				}
-				else{
-					maze[row][col].setId(feature);
+				if(number > 30){
+					ex.execute(new SpiderSprite(maze, player, row, col)); 
 				}
 				counter++;
 			}
@@ -65,8 +62,12 @@ public class Maze {
 	}
 	
 	//
-	public PlayerMovement getPlayer() {
-		return this.pm;
+	public Player getPlayer() {
+		return this.player;
+	}
+	
+	public void setPlayer(Player player){
+		this.player=player;
 	}
 
 	private void buildMaze(){ 
@@ -75,11 +76,11 @@ public class Maze {
 				int num = (int) (Math.random() * 10);
 				if (num > 5 && col + 1 < maze[row].length - 1){
 					//smash down a wall to the east
-					maze[row][col + 1].setId(-1);
+					maze[row][col + 1].setTypeOfNode('\u0020');;
 				}else{
 					//smash down a wall to the west
 					if (row + 1 < maze.length - 1){
-						maze[row + 1][col].setId(-1);
+						maze[row + 1][col].setTypeOfNode('\u0020');;
 					}
 				}
 			}
@@ -94,10 +95,10 @@ public class Maze {
 		return this.maze[row][col];
 	}
 	
-	public void set(int row, int col, Node n){
-		n.setRow(row);
-		n.setCol(col);
-		this.maze[row][col] = n;
+	public void set(int row, int col, char n){
+		//n.setRow(row);
+		//n.setCol(col);
+		this.maze[row][col].setTypeOfNode(n);
 	}
 	
 	public int size(){

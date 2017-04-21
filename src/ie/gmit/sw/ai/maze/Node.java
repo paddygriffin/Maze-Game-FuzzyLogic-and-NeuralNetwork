@@ -3,7 +3,7 @@ package ie.gmit.sw.ai.maze;
 import java.awt.Color;
 
 public class Node {
-	private int id = -1;
+	//private int id = -1;
 
 	private Node parent;
 	private Color color = Color.BLACK;
@@ -13,11 +13,12 @@ public class Node {
 	private int row = -1;
 	private int col = -1;
 	private int distance;
+	private char typeOfNode;
 
-	public Node(int row, int col, int id) {
+	public Node(int row, int col) {//, int id
 		this.row = row;
 		this.col = col;
-		this.id = id;
+		//this.id = id;
 	}
 
 	public int getRow() {
@@ -53,14 +54,14 @@ public class Node {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+//
+//	public int getId() {
+//		return id;
+//	}
+//
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 
 	public boolean hasDirection(Direction direction) {
 		for (int i = 0; i < paths.length; i++) {
@@ -90,25 +91,18 @@ public class Node {
 		
 		//Only return adjacent nodes that are not hedges 
 		if (row > 0) {
-			if (maze[row - 1][col].getId() != 0) {
 				adjacents.add(maze[row - 1][col]); // Add North
-			}
+
 		}
 		if (row < maze.length - 1) {
-			if (maze[row + 1][col].getId() != 0) {
 				adjacents.add(maze[row + 1][col]); // Add South
-			}
 		}
 		
 		if (col > 0) {
-			if (maze[row][col - 1].getId() != 0) {
 				adjacents.add(maze[row][col - 1]); // Add West
-			}
 		}
 		if (col < maze[row].length - 1) {
-			if (maze[row][col + 1].getId() != 0) {
 				adjacents.add(maze[row][col + 1]); // Add East
-			}
 		}
 
 		return (Node[]) adjacents.toArray(new Node[adjacents.size()]);
@@ -169,5 +163,13 @@ public class Node {
 
 	public String toString() {
 		return "[" + row + "/" + col + "]";
+	}
+	
+	public char getTypeOfNode(){
+		return typeOfNode;
+	}
+	
+	public void setTypeOfNode(char typeOfNode){
+		this.typeOfNode = typeOfNode;
 	}
 }

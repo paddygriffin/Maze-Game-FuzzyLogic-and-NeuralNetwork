@@ -67,7 +67,7 @@ public class GameView extends JPanel implements ActionListener{
         		int id = 0;
        		
         		if (zoomOut){
-        			id = maze.get(row, col).getId();//give me the character at this ro col position
+        			id = maze.get(row, col).getTypeOfNode();//give me the character at this ro col position
         			if (id >= 5){
 	        			if (row == currentRow && col == currentCol){
 	        				g2.setColor(Color.YELLOW);
@@ -77,7 +77,7 @@ public class GameView extends JPanel implements ActionListener{
         				g2.fillRect(x1, y1, size, size);
         			}
         		}else{//if you're not zoomed out
-        			id = maze.get(currentRow - cellpadding + row, currentCol - cellpadding + col).getId();
+        			id = maze.get(currentRow - cellpadding + row, currentCol - cellpadding + col).getTypeOfNode();
         		}
         		
         		imageIndex = id;
