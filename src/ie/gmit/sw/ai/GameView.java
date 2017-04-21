@@ -22,9 +22,7 @@ public class GameView extends JPanel implements ActionListener{
 	private Color[] reds = {new Color(255,160,122), new Color(139,0,0), new Color(255, 0, 0)}; //Animate enemy "dots" to make them easier to see
 	
 	public GameView(Maze maze) throws Exception{
-//		this.maze = maze;//pass in the maze
-//		currentRow = maze.getPlayer().getRow();
-//    	currentCol = maze.getPlayer().getCol();
+		this.maze = maze;//pass in the maze
 		setBackground(Color.LIGHT_GRAY);
 		setDoubleBuffered(true);//image optimization
 		timer = new Timer(300, this);
@@ -32,7 +30,6 @@ public class GameView extends JPanel implements ActionListener{
 	}
 	
 	public void setCurrentRow(int row) {
-		//specify the row
 		if (row < cellpadding){
 			currentRow = cellpadding;
 		}else if (row > (maze.size() - 1) - cellpadding){
@@ -66,11 +63,11 @@ public class GameView extends JPanel implements ActionListener{
         		int x1 = col * size;
         		int y1 = row * size;
         		
-        		int id = 0;
+        		char ch = '0';
        		
         		if (zoomOut){
-        			id = maze.get(row, col).getTypeOfNode();//give me the character at this ro col position
-        			if (id >= 5){
+        			ch = maze.get(row, col).getTypeOfNode();//give me the character at this ro col position
+        			if (ch >= '5'){
 	        			if (row == currentRow && col == currentCol){
 	        				g2.setColor(Color.YELLOW);
 	        			}else{
@@ -79,11 +76,11 @@ public class GameView extends JPanel implements ActionListener{
         				g2.fillRect(x1, y1, size, size);
         			}
         		}else{//if you're not zoomed out
-        			id = maze.get(currentRow - cellpadding + row, currentCol - cellpadding + col).getTypeOfNode();
+        			ch = maze.get(currentRow - cellpadding + row, currentCol - cellpadding + col).getTypeOfNode();
         		}
         		
-        		imageIndex = id;
-        		
+        		imageIndex = (int)ch;
+        		imageIndex -= offset;
         		if (imageIndex < 0){
         			
         			g2.setColor(Color.LIGHT_GRAY);//Empty cell

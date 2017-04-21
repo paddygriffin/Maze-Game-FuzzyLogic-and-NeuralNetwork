@@ -52,8 +52,4 @@ public class BestFirstTraversator implements Traversator{
 		
 	}
 
-	@Override
-	public Node getNextNode() {
-		return path.getFirst();
-	}
 }

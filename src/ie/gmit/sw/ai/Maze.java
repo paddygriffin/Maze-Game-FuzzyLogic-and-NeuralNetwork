@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 import ie.gmit.sw.ai.maze.*;
-import ie.gmit.sw.ai.sprite.Weapon;
+import ie.gmit.sw.ai.sprite.Object;
 import ie.gmit.sw.ai.sprite.Player;
 import ie.gmit.sw.ai.sprite.Spiders;
 
@@ -13,7 +13,8 @@ public class Maze {
 	private Node[][] maze;
 	private Player player;
 	private ExecutorService ex = Executors.newFixedThreadPool(100);
-	private List<Weapon> sprites = new ArrayList<>();
+	private List<Spiders> sprites = new ArrayList<>();
+	
 	public Maze(int dimension, Player player){
 		
 		maze = new Node[dimension][dimension];
@@ -22,15 +23,15 @@ public class Maze {
 		buildMaze();
 		//addFeature(5, -1, 1);
 		
-		int featureNumber = 20;
+		int featureNumber = 10;
 		addFeature('\u0031', '0', featureNumber); //1 is a sword, 0 is a hedge
 		addFeature('\u0032', '0', featureNumber); //2 is help, 0 is a hedge
 		addFeature('\u0033', '0', featureNumber); //3 is a bomb, 0 is a hedge
 		addFeature('\u0034', '0', featureNumber); //4 is a hydrogen bomb, 0 is a hedge
 	
-		featureNumber = 30;//(int)((dimension * dimension) * 0.01);
+		featureNumber = 20;//(int)((dimension * dimension) * 0.01);
 		addFeature('\u0036', '0', featureNumber); //6 is a Black Spider, 0 is a hedge
-//		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
+		addFeature('\u0037', '0', featureNumber); //7 is a Blue Spider, 0 is a hedge
 //		addFeature('\u0038', '0', featureNumber); //8 is a Brown Spider, 0 is a hedge
 //		addFeature('\u0039', '0', featureNumber); //9 is a Green Spider, 0 is a hedge
 //		addFeature('\u003A', '0', featureNumber); //: is a Grey Spider, 0 is a hedge
@@ -58,12 +59,18 @@ public class Maze {
 			
 			if (maze[row][col].getTypeOfNode() == replace){
 				maze[row][col].setTypeOfNode(feature);
-				//if the feature is greater than 5, a spider will be created
-				if(number > 30){
-					ex.execute(new Spiders(maze, player, row, col, 25, counter)); //25 is spiders strength
+				if (maze[row][col].getTypeOfNode() == replace){
+					maze[row][col].setTypeOfNode(feature);
+					//if the feature is greater than 5, a spider will be created
+					if(number > 5){
+						Spiders s = new Spiders(maze, player, row, col, 25, counter); //25 is spiders strength
+						sprites.add(s);
+						ex.execute(s);
+					}
 				}
 				counter++;
 			}
+			
 		}
 	}
 	
@@ -123,8 +130,8 @@ public class Maze {
 		return sb.toString();
 	}
 	
-	public Weapon getSprite(int row, int col){
-		for(Weapon s : sprites ){
+	public Spiders getSprite(int row, int col){
+		for(Spiders s : sprites ){
 			if (maze[row][col].getRow() == row && maze[row][col].getCol() == col){
 				return s;
 			}

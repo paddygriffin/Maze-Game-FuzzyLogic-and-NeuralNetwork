@@ -58,9 +58,4 @@ public class AStarTraversator implements Traversator{
 			}									
 		}path.addFirst(closed.get(0));
 	}
-
-	@Override
-	public Node getNextNode() {
-		return path.getFirst();
-	}
 }
